@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K.R.O.N.O.S</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Three.js + Bloom -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Reprodutor de áudio conectado ao analisador de frequências do Three.js -->
+    <audio id="kronos-audio-player" style="display: none;"></audio>
+
+    <div class="vignette-overlay"></div>
+    <div id="canvas-container"></div>
+
+    <header class="hud-header">
+        <div class="hud-status" id="status-badge">
+            <span class="status-dot"></span>
+            <span class="status-label">KRONOS // STATUS: IDLE</span>
+        </div>
+    </header>
+
+    <div class="hud-input-wrapper">
+        <span class="prompt-symbol">&gt;_</span>
+        <input type="text" id="command-input" placeholder="Transmitir ordem ao núcleo... (ou clique no mic)" autocomplete="off">
+        
+        <button id="btn-mic" class="mic-btn" title="Falar com KRONOS (Ctrl+Espaço)" onclick="toggleMicrophone()">
+            <svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+        </button>
+        <button id="btn-cancel-command" class="cancel-command-btn" type="button" hidden onclick="cancelCurrentCommand()">Cancelar tarefa</button>
+    </div>
+
+    <!-- MODAL 2: GRÁFICOS -->
+    <div id="modal-graficos" class="modal-overlay hidden">
+        <div class="modal-window telemetry-fullview">
+            <div class="telemetry-topbar">
+                <div class="topbar-left">
+                    <span class="topbar-tag">// WAR ROOM TELEMETRY</span>
+                    <span id="geo-location" class="topbar-info">CURITIBA (SANTA CÂNDIDA), PR</span>
+                </div>
+                <div class="topbar-right">
+                    <span id="geo-weather" class="weather-badge">--°C // CARREGANDO</span>
+                    <button class="modal-close-btn" onclick="switchTab('home')">[ FECHAR ]</button>
+                </div>
+            </div>
+
+            <div class="charts-dashboard-grid">
+                <div class="chart-card line-card">
+                    <div class="card-header">
+                        <h4>// HISTÓRICO EM LINHA (TEMPO REAL: 30s)</h4>
+                        <div class="legend-pills">
+                            <span class="pill cpu-pill">CPU: <b id="lbl-cpu-val">0%</b></span>
+                            <span class="pill ram-pill">RAM: <b id="lbl-ram-val">0%</b></span>
+                        </div>
+                    </div>
+                    <div class="canvas-wrap">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card col-card">
+                    <div class="card-header">
+                        <h4>// CARGA EM COLUNAS (SUBSISTEMAS)</h4>
+                    </div>
+                    <div class="canvas-wrap">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card radar-card">
+                    <div class="card-header">
+                        <h4>// RADAR OPERACIONAL MULTIDIMENSIONAL</h4>
+                    </div>
+                    <div class="canvas-wrap radar-wrap">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: LOGS & MENTE PRÓPRIA -->
+    <div id="modal-logs" class="modal-overlay hidden">
+        <div class="modal-window wide logs-modal-clean">
+            <div class="modal-top">
+                <h3>// REGISTROS DE CONSCIÊNCIA & OPERAÇÕES</h3>
+                <div class="modal-top-actions">
+                    <span id="export-feedback" class="feedback-toast"></span>
+                    <button class="action-link-btn" onclick="exportAuditLogs()">[ EXPORTAR ]</button>
+                    <button class="action-link-btn" onclick="clearAllLogs()">[ LIMPAR ]</button>
+                    <button class="modal-close-btn" onclick="switchTab('home')">[ FECHAR ]</button>
+                </div>
+            </div>
+
+            <div class="logs-split">
+                <div class="log-column">
+                    <h4 class="col-title">// FLUXO DE CONSCIÊNCIA (MENTE PRÓPRIA)</h4>
+                    <div class="stream-box" id="thought-feed">
+                        <div class="thought-msg">
+                            <span class="time-stamp">[BOOT]</span>
+                            <span class="thought-txt">Consciência sintética online. Raciocínio autônomo ativado.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="log-column">
+                    <h4 class="col-title">// REGISTRO OPERACIONAL (AUDITORIA)</h4>
+                    <div class="stream-box" id="action-feed">
+                        <div class="action-msg">
+                            <span class="time-stamp">[CORE]</span>
+                            <span class="action-txt">Pronto para receber ordens do usuário com obediência técnica total.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: CALIBRAÇÃO DO NÚCLEO 3D -->
+    <div id="modal-config" class="modal-overlay hidden">
+        <div class="modal-window wide config-window-clean">
+            <div class="modal-top">
+                <h3>// PAINEL DE CONTROLE OPERACIONAL (CONFIGURAÇÕES)</h3>
+                <button class="modal-close-btn" onclick="switchTab('home')">[ FECHAR ]</button>
+            </div>
+
+            <div class="config-grid-layout">
+                <div class="config-card">
+                    <h4 class="cfg-section-title">// REATOR 3D (HOLOGRAFIA)</h4>
+                    <div class="cfg-row">
+                        <div class="cfg-info">
+                            <span>VELOCIDADE GIROSCÓPICA</span>
+                            <span id="lbl-speed" class="cfg-num">1.0x</span>
+                        </div>
+                        <input type="range" id="slider-speed" min="0.1" max="3" step="0.1" value="1">
+                    </div>
+                    <div class="cfg-row">
+                        <div class="cfg-info">
+                            <span>ESCALA DO NÚCLEO</span>
+                            <span id="lbl-scale" class="cfg-num">1.0x</span>
+                        </div>
+                        <input type="range" id="slider-scale" min="0.5" max="2" step="0.1" value="1">
+                    </div>
+                    <div class="cfg-row">
+                        <div class="cfg-info">
+                            <span>BRILHO EMISSIVO (BLOOM)</span>
+                            <span id="lbl-glow" class="cfg-num">1.6</span>
+                        </div>
+                        <input type="range" id="slider-glow" min="0.5" max="4" step="0.1" value="1.6">
+                    </div>
+                </div>
+
+                <div class="config-card">
+                    <h4 class="cfg-section-title">// PERFIL DO WINDOWS 11</h4>
+                    <p class="cfg-desc">Alterne as políticas de hardware e sensibilidade:</p>
+                    <div class="mode-buttons-group">
+                        <button id="btn-mode-padrao" class="mode-select-btn active" onclick="changeMode('PADRAO')">
+                            <span class="mode-name">PADRÃO</span>
+                            <span class="mode-desc-tag">Equilíbrio de Recursos</span>
+                        </button>
+                        <button id="btn-mode-gamer" class="mode-select-btn" onclick="changeMode('GAMER')">
+                            <span class="mode-name">GAMER</span>
+                            <span class="mode-desc-tag">Desempenho & Call Shield</span>
+                        </button>
+                        <button id="btn-mode-dev" class="mode-select-btn" onclick="changeMode('DEV')">
+                            <span class="mode-name">MODO DEV</span>
+                            <span class="mode-desc-tag">Prioridade Blender & 3D</span>
+                        </button>
+                    </div>
+
+                    <h4 class="cfg-section-title" style="margin-top: 18px;">// MIXER DE ÁUDIO DA VOZ</h4>
+                    <div class="cfg-row">
+                        <div class="cfg-info">
+                            <span>VOLUME DE SÍNTESE (KRONOS)</span>
+                            <span id="lbl-voice-vol" class="cfg-num">100%</span>
+                        </div>
+                        <input type="range" id="slider-voice-vol" min="0" max="100" step="5" value="100">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DOCK INFERIOR -->
+    <footer class="hud-dock-wrapper">
+        <nav class="hud-dock">
+            <button id="tab-home" class="dock-item active" onclick="switchTab('home')">
+                <span class="btn-text">HOME</span>
+            </button>
+            <button id="tab-graficos" class="dock-item" onclick="switchTab('graficos')">
+                <span class="btn-text">GRÁFICOS</span>
+            </button>
+            <button id="tab-logs" class="dock-item" onclick="switchTab('logs')">
+                <span class="btn-text">LOGS</span>
+            </button>
+            <button id="tab-config" class="dock-item" onclick="switchTab('config')">
+                <span class="btn-text">CONFIGURAÇÕES</span>
+            </button>
+        </nav>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

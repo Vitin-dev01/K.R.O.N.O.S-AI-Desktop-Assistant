@@ -1,0 +1,29 @@
+
+# Credenciais
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Dados pessoais e bancos locais
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs e relatórios gerados
+*.log
+kronos_relatorio_*.txt
+
+# Áudios gerados e testes de voz
+kronos_voice.mp3
+kronos_voice.wav
+teste_*.wav
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db

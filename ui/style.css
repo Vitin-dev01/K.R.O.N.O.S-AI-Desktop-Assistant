@@ -1,0 +1,548 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background-color: #030406;
+    color: #f0f3f8;
+    font-family: 'Rajdhani', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+.vignette-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 40%, rgba(1, 2, 4, 0.85) 90%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Header & Status */
+.hud-header {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hud-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 18px;
+    background: rgba(12, 16, 22, 0.6);
+    border: 1px solid rgba(220, 140, 40, 0.3);
+    border-radius: 4px;
+    backdrop-filter: blur(12px);
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: #e59438;
+    transition: all 0.5s ease;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #e59438;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #e59438;
+}
+
+/* Linha de Comando & Botão de Microfone */
+.hud-input-wrapper {
+    position: absolute;
+    bottom: 84px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 520px;
+    display: flex;
+    align-items: center;
+    background: rgba(8, 11, 16, 0.7);
+    border: 1px solid rgba(220, 140, 40, 0.25);
+    border-radius: 6px;
+    padding: 6px 10px 6px 14px;
+    backdrop-filter: blur(16px);
+    z-index: 10;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.hud-input-wrapper:focus-within {
+    border-color: #ffaa40;
+    box-shadow: 0 0 15px rgba(255, 170, 64, 0.25);
+}
+
+.prompt-symbol {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    color: #ffaa40;
+    margin-right: 10px;
+}
+
+#command-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+#command-input::placeholder { color: #5d6778; }
+
+.cancel-command-btn {
+    background: rgba(180, 48, 48, 0.18);
+    border: 1px solid rgba(255, 95, 95, 0.55);
+    border-radius: 4px;
+    color: #ff9a9a;
+    cursor: pointer;
+    font: 600 12px 'Rajdhani', sans-serif;
+    letter-spacing: 0.5px;
+    margin-left: 8px;
+    padding: 0 10px;
+    white-space: nowrap;
+}
+
+.cancel-command-btn:hover {
+    background: rgba(180, 48, 48, 0.35);
+    color: #fff;
+}
+
+.cancel-command-btn[hidden] { display: none; }
+
+/* Botão de Microfone Tático */
+.mic-btn {
+    background: rgba(212, 122, 32, 0.15);
+    border: 1px solid rgba(255, 170, 64, 0.35);
+    border-radius: 4px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #ffaa40;
+    transition: all 0.2s ease;
+    margin-left: 8px;
+}
+
+.mic-btn:hover {
+    background: rgba(255, 170, 64, 0.25);
+    border-color: #ffaa40;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 170, 64, 0.3);
+}
+
+.mic-icon {
+    width: 17px;
+    height: 17px;
+    transition: transform 0.2s ease;
+}
+
+/* Estado de Gravação Ativo (Pulsando) */
+.mic-btn.recording {
+    background: rgba(255, 17, 51, 0.25);
+    border-color: #ff1133;
+    color: #ff1133;
+    animation: micGlowPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes micGlowPulse {
+    0% { box-shadow: 0 0 4px #ff1133; transform: scale(1); }
+    50% { box-shadow: 0 0 16px #ff1133; transform: scale(1.06); }
+    100% { box-shadow: 0 0 4px #ff1133; transform: scale(1); }
+}
+
+/* Dock Inferior */
+.hud-dock-wrapper {
+    position: absolute;
+    bottom: 22px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+.hud-dock {
+    display: flex;
+    gap: 8px;
+    background: rgba(6, 8, 12, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 6px 10px;
+    border-radius: 8px;
+    backdrop-filter: blur(20px);
+}
+
+.dock-item {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #79869a;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dock-item:hover { color: #f5a638; background: rgba(245, 166, 56, 0.08); }
+.dock-item.active {
+    color: #ffaa40;
+    background: rgba(245, 166, 56, 0.16);
+    border-color: rgba(245, 166, 56, 0.4);
+    box-shadow: 0 0 12px rgba(245, 166, 56, 0.2);
+}
+
+/* Modais Base */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(2, 3, 5, 0.75);
+    backdrop-filter: blur(18px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.hidden { display: none; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-window {
+    background: rgba(10, 13, 19, 0.94);
+    border: 1px solid rgba(245, 166, 56, 0.3);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+}
+
+.modal-window.wide { width: 920px; }
+
+/* Modal de Logs Limpo */
+.logs-modal-clean {
+    max-height: 84vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+}
+
+.modal-top h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #ffaa40;
+}
+
+.modal-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.feedback-toast {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    color: #ffaa40;
+    transition: opacity 0.3s;
+}
+
+.action-link-btn {
+    background: none;
+    border: none;
+    color: #8c98ad;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+.action-link-btn:hover { color: #ffaa40; }
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    color: #8c98ad;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+.modal-close-btn:hover { color: #ffaa40; }
+
+.logs-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    flex: 1;
+}
+
+.log-column { display: flex; flex-direction: column; }
+
+.col-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #8f9db5;
+    margin-bottom: 10px;
+}
+
+.stream-box {
+    height: 430px;
+    overflow-y: auto;
+    background: rgba(5, 7, 10, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+}
+
+.telemetry-fullview::-webkit-scrollbar,
+.stream-box::-webkit-scrollbar,
+.config-window-clean::-webkit-scrollbar {
+    width: 6px;
+}
+
+.telemetry-fullview::-webkit-scrollbar-track,
+.stream-box::-webkit-scrollbar-track,
+.config-window-clean::-webkit-scrollbar-track {
+    background: rgba(10, 14, 20, 0.6);
+    border-radius: 3px;
+}
+
+.telemetry-fullview::-webkit-scrollbar-thumb,
+.stream-box::-webkit-scrollbar-thumb,
+.config-window-clean::-webkit-scrollbar-thumb {
+    background: #d47a20;
+    border-radius: 3px;
+    box-shadow: 0 0 6px rgba(212, 122, 32, 0.5);
+}
+
+.thought-msg {
+    border-left: 2px solid #ffaa40;
+    padding-left: 10px;
+    color: #e6b16d;
+    line-height: 1.6;
+}
+
+.action-msg {
+    border-left: 2px solid #ffffff;
+    padding-left: 10px;
+    color: #e2e8f0;
+    line-height: 1.6;
+}
+
+.action-msg.user-msg {
+    border-left-color: #d47a20;
+    color: #ffaa40;
+}
+
+.action-msg.error-msg {
+    border-left-color: #ff5263;
+    color: #ff7b87;
+}
+
+.time-stamp {
+    font-size: 9px;
+    opacity: 0.6;
+    margin-right: 6px;
+}
+
+/* Central de Telemetria */
+.telemetry-fullview {
+    width: 94%;
+    max-width: 1150px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-right: 14px;
+}
+
+.telemetry-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-tag { font-family: 'Orbitron', monospace; font-size: 13px; letter-spacing: 2px; color: #ffaa40; }
+.topbar-info { font-size: 13px; color: #e2e8f0; letter-spacing: 1px; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+
+.weather-badge {
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    color: #ffffff;
+    background: rgba(212, 122, 32, 0.18);
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 170, 64, 0.4);
+    box-shadow: 0 0 10px rgba(255, 170, 64, 0.1);
+}
+
+.charts-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+    padding-bottom: 16px;
+}
+
+.chart-card {
+    background: rgba(14, 18, 26, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+}
+
+.line-card { grid-column: 1 / 3; min-height: 280px; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-shrink: 0; }
+.card-header h4 { font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 1.5px; color: #8c98ad; }
+.legend-pills { display: flex; gap: 14px; font-size: 12px; }
+.pill.cpu-pill { color: #ffaa40; font-family: 'Orbitron', monospace; }
+.pill.ram-pill { color: #ffffff; font-family: 'Orbitron', monospace; }
+.canvas-wrap { flex: 1; position: relative; width: 100%; height: 100%; min-height: 200px; }
+.radar-wrap { display: flex; justify-content: center; align-items: center; }
+
+/* MODAL DE CONFIGURAÇÕES */
+.config-window-clean {
+    max-height: 84vh;
+    overflow-y: auto;
+}
+
+.config-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.config-card {
+    background: rgba(14, 18, 26, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.cfg-section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #ffaa40;
+    border-bottom: 1px solid rgba(255, 170, 64, 0.2);
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+}
+
+.cfg-desc { font-size: 12px; color: #8c98ad; line-height: 1.4; margin-bottom: 4px; }
+
+.cfg-row {
+    background: rgba(18, 23, 33, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.cfg-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #8c98ad;
+    margin-bottom: 8px;
+}
+
+.cfg-num { font-family: 'Orbitron', monospace; color: #ffaa40; font-weight: 700; }
+.cfg-row input[type="range"] { width: 100%; accent-color: #ffaa40; }
+
+.mode-buttons-group { display: flex; flex-direction: column; gap: 8px; }
+
+.mode-select-btn {
+    background: rgba(18, 23, 33, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mode-select-btn:hover { background: rgba(245, 166, 56, 0.08); border-color: rgba(245, 166, 56, 0.4); }
+.mode-select-btn.active {
+    background: rgba(212, 122, 32, 0.2);
+    border-color: #ffaa40;
+    box-shadow: 0 0 12px rgba(255, 170, 64, 0.25);
+}
+
+.mode-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #fff;
+}
+.mode-select-btn.active .mode-name { color: #ffaa40; }
+.mode-desc-tag { font-size: 11px; color: #79869a; }

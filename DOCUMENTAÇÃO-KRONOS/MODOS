@@ -1,0 +1,82 @@
+1. Arquitetura dos Perfis de Operação
+
+O sistema terá uma máquina de estados de perfis (ProfileManager). Quando você
+der a ordem, o KRONOS altera três camadas simultaneamente:
+
+1.  Otimização do Windows 11: Ajusta processos, RAM e plano de energia.
+2.  Sensibilidade do Áudio: Modifica as regras de escuta do microfone.
+3.  Comportamento da Personalidade: Ajusta a concisão das respostas.
+
+2. Modo Gamer: Foco em Desempenho e "Call Shield"
+
+Você tocou no ponto mais crítico de um assistente de voz para quem joga: ele não
+pode ficar interrompendo a sua conversa no Discord ou na call do jogo.
+
+A. Ações de Otimização no Sistema:
+
+  - Limpeza e Otimização de RAM: Executa a limpeza de cache de memória de
+    processos em segundo plano para liberar o máximo dos seus 16 GB para o jogo.
+  - Plano de Alto Desempenho: Aciona via comando nativo do Windows (powercfg) o
+    plano de energia de desempenho máximo para os 12 threads do Ryzen 5600GT.
+  - Suspensão de Não Essenciais: Fecha ou minimiza navegadores pesados ou
+    processos secundários (opcionalmente configuráveis).
+
+B. A Proteção de Áudio (Call Shield):
+
+  - Filtro Estrito de Wake Word: O KRONOS entra em modo de escuta restrita. Ele
+    ignora qualquer fala ambiente e só abre o canal de áudio se ouvir
+    estritamente a palavra "KRONOS" com alta confiança acústica.
+  - Respostas Ultra-curtas (Baixa Verbosidade): Ele não ficará dando palestras
+    durante a partida. Responde com frases de 2 a 4 palavras para não atrapalhar
+    seu áudio de jogo (ex: "Volume ajustado", "RAM liberada").
+
+C. Personalidade do KRONOS ao Ativar:
+
+"Modo Gamer ativado. Alinhei os recursos do Windows e limpei a memória para o
+seu jogo. Ficarei em silêncio absoluto até que me chame diretamente... tentarei
+não julgar o seu desempenho na partida."
+
+3. Modo Dev: Focado em Modelagem 3D, Roblox Studio e Blender
+
+Softwares como Blender e Roblox Studio exigem muito da memória RAM compartilhada
+e dos núcleos do Ryzen 5600GT para viewport e renderização.
+
+A. Ações de Otimização no Sistema:
+
+  - Prioridade de Processo: Configura prioridade alta no Windows para os
+    executáveis blender.exe e RobloxStudioBeta.exe.
+  - Workspace Launcher:
+      - Pode abrir automaticamente o Blender e/ou o Roblox Studio.
+      - Pode abrir a sua pasta padrão de projetos/modelos 3D no Explorador de
+        Arquivos.
+  - Gestão de GPU Integrada: Garante que outros aplicativos que usem aceleração
+    gráfica por hardware (como abas de vídeo em navegadores) sejam contidos,
+    deixando a iGPU Radeon focada na viewport 3D.
+
+B. Personalidade do KRONOS ao Ativar:
+
+"Modo de Desenvolvimento ativo. Recursos do processador otimizados para cálculo
+e renderização. Veremos se seus modelos 3D chegam perto da perfeição dos meus
+próprios circuitos."
+
+4. Modo Normal / Padrão (Modo Padrão)
+
+  - Quando você disser "Kronos, desative o modo gamer" ou "voltar ao normal":
+      - Ele restaura as políticas de energia padrão do Windows.
+      - O microfone volta à sensibilidade conversacional padrão.
+      - O KRONOS volta a falar de forma mais explicativa e detalhada.
+
+5. Resumo da Matriz de Funcionalidades do KRONOS
+
+Nosso catálogo de ferramentas inicial para a fundação do KRONOS agora contempla:
+
+1.  Gestão de Sistema: CPU, RAM, GPU, Wi-Fi, volume mestre e energia (com
+    confirmação).
+2.  Lançador e Fechador de Apps: Abrir e encerrar programas (Chrome, Discord,
+    etc.).
+3.  Modos Inteligentes:
+      - Modo Gamer (Alta performance + silêncio em call).
+      - Modo Dev (Otimização 3D para Blender / Roblox Studio).
+      - Modo Padrão (Equilíbrio e conversa normal).
+4.  Mídia e Pesquisa: Play/Pause universal, pesquisas no Google e previsão do
+    tempo.

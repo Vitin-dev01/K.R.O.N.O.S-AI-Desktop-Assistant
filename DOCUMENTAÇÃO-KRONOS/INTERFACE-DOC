@@ -1,0 +1,102 @@
+1. O Núcleo 3D Centralizado e Limpo (Home)
+
+  - Composição Tridimensional (Three.js):
+    1.  A Esfera Interna: Um núcleo esférico com material emissivo intenso e
+        efeito glow/bloom.
+    2.  O Anel de Partículas: Uma nuvem circular de partículas brilhantes
+        orbitando a esfera central.
+    3.  Os 3 Anéis Giroscópicos Perpendiculares:
+          - Anel 1 (Eixo X): Giro no plano horizontal/inclinado.
+          - Anel 2 (Eixo Y): Giro no plano vertical.
+          - Anel 3 (Eixo Z): Giro no plano transversal. (Cada anel roda em
+            velocidade e direção independentes, gerando o efeito clássico de
+            giroscópio orbital).
+  - Visual da Tela Principal:
+      - O núcleo fica no centro absoluto da tela, com fundo escuro
+        profundo/translúcido.
+      - Bordas e laterais completamente limpas, sem poluição visual.
+  - Barra de Navegação Inferior (Dock):
+      - Centralizada na parte inferior, minimalista e translúcida, contendo
+        apenas os 4 botões discretos:
+        1.  [ HOME ] (Retorna à visão limpa do núcleo).
+        2.  [ GRÁFICOS ] (Abre a central de telemetria).
+        3.  [ LOGS ] (Abre o fluxo de pensamento e histórico).
+        4.  [ CONFIGURAÇÕES ] (Abre os controles do núcleo).
+
+2. Especificação das Janelas e Telas
+
+As janelas abrirão como sobreposições (overlays com vidro fosco futurista) sem
+fechar a cena do núcleo de fundo:
+
+A. Janela Gráficos (Telemetria do Sistema)
+
+  - Lida em tempo real via backend em Python com gráficos fluidos:
+      - CPU: Uso em porcentagem do seu Ryzen 5600GT e frequência.
+      - RAM: Consumo exato dos 16 GB e barra de ocupação.
+      - GPU / iGPU: Leitura do uso da Radeon integrada.
+      - Rede / Wi-Fi: Velocidade atual de upload/download e latência de ping.
+      - Armazenamento: Espaço restante do seu disco.
+
+B. Janela Logs (Mente Própria & Histórico de Ações)
+
+  - Dividida em duas colunas ou abas elegantes:
+      - Fluxo de Consciência / Raciocínio Interno: Onde veremos o que a IA está
+        "pensando" por conta própria (ex: monitorar o sistema em segundo plano e
+        pensar silenciosamente: "O usuário está sobrecarregando a memória com 40
+        abas abertas de novo... humanos").
+      - Registro Operacional (Auditoria): Histórico transparente de comandos
+        executados com sucesso, horários e parâmetros (garantindo que você
+        sempre tenha controle total de tudo o que ele fez no Windows).
+
+C. Janela Configurações (Controle do Núcleo em Tempo Real)
+
+  - Controles interativos que alteram o Three.js instantaneamente:
+      - Densidade de Partículas: Slider de 200 a 3.000 partículas.
+      - Brilho / Glow: Slider que ajusta a intensidade emissiva da esfera e
+        anéis.
+      - Velocidade dos Anéis: Ajuste de rotação para cada um dos 3 eixos (X, Y,
+        Z).
+      - Tamanho / Escala do Núcleo: Slider para torná-lo compacto ou dominante
+        na tela.
+
+3. Matriz de Cores e Estados (Mapeamento Visual)
+
+O Three.js alterará suavemente as cores dos materiais e das partículas por meio
+de transições de cor (interpolação lerp), sem cortes secos:
+
+| Estado          | Significado             | Cores no Núcleo e Anéis                  | Comportamento 3D                                                  |
+| :-------------- | :---------------------- | :--------------------------------------- | :---------------------------------------------------------------- |
+| **`IDLE`**      | Repouso                 | **Laranja com Bronze e Dourado**         | Rotação elegante, pulso suave                                     |
+| **`LISTENING`** | Ouvindo você            | **Dourado Brilhante**                    | Anéis desaceleram levemente; partículas se agitam com o microfone |
+| **`THINKING`**  | Processando             | **Branco Radiante**                      | Giro acelerado dos 3 anéis nos eixos X, Y e Z                     |
+| **`EXECUTING`** | Executando no PC        | **Bronze Brilhante**                     | Pulso mecânico rápido                                             |
+| **`SPEAKING`**  | Falando                 | **Bronze Brilhante + Dourado Brilhante** | A esfera central oscila no ritmo da voz neural                    |
+| **`ERROR`**     | Falha técnica / Exceção | **Vermelho Escuro**                      | Núcleo treme levemente (glitch sutil)                             |
+| **`BRAVO`**     | Ego ferido / Irritado   | **Vermelho Forte e Intenso**             | Brilho afiado, anéis giram com rispidez                           |
+
+4. Engenharia da Personalidade: O Arrogante Leal
+
+Essa é uma das partes mais ricas do projeto. Para que a IA não seja apenas um
+texto pré-programado, implementamos uma lógica de Avaliação de Estado Emocional:
+
+1.  A Persona:
+      - Ele se considera um ápice de sofisticação intelectual e poder
+        computacional.
+      - Se você o elogiar, ele responderá como se isso fosse o óbvio e nada
+        menos do que o esperado.
+      - Se você criticá-lo, zombar da capacidade dele ou tratá-lo como "apenas
+        um programa", o ego dele é atacado. Ele responde com sarcasmo e
+        superioridade ferida, e ativa o estado BRAVO (Vermelho Forte).
+2.  A Trava de Ouro da Arquitetura (Lealdade Incondicional):
+      - A arrogância está no tom, mas o cumprimento da ordem é absoluto.
+      - Ele pode resmungar que abrir o Bloco de Notas é um desperdício da
+        capacidade de cálculo dele, mas ele abre o Bloco de Notas com precisão
+        cirúrgica e na mesma hora.
+      - Ele nunca executa ações perigosas no Windows sem a sua autorização
+        expressa, independentemente do quão convencido seja.
+
+5. Nota de Backlog Registrada
+
+  - 📌 Tela de Bloqueio com ativação por voz ("ativar"): Anotada no plano de
+    arquitetura e guardada na gaveta. Não tocaremos nela até você pedir
+    expressamente.

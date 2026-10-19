@@ -1,0 +1,335 @@
+
+=== .\app.py (385 linhas) ===
+  imports: brain, config, ctypes, datetime, io, json, keyboard, logging, numpy, os, psutil, random, sfx, sounddevice, speech_recognition, sys, threading, time, tools, voice, wave, webview
+  def _audio_record_callback()  [linha 50]
+  def toggle_kronos_global_hotkey()  [linha 57]
+  class KronosBridge  [linha 95]
+      def __init__()
+      def process_user_message()
+      def _submit_user_message()
+      def cancel_current_command()
+      def _run_user_message()
+      def _complete_user_message()
+      def get_telemetry()
+      def set_mode()
+      def set_voice_volume()
+      def toggle_fullscreen()
+      def export_logs()
+      def start_manual_recording()
+      def stop_manual_recording()
+      def _execute_voice_command()
+  def startup_greeting_thread()  [linha 297]
+  def autonomous_consciousness_daemon()  [linha 311]
+  def setup_global_keyboard_hook()  [linha 332]
+  def ensure_console_output()  [linha 340]
+  def main()  [linha 359]
+
+=== .\blender_automation.py (2349 linhas) ===
+  imports: PIL, ast, config, google, json, math, os, psutil, pygetwindow, re, shutil, subprocess, tempfile, textwrap, time, tkinter, unicodedata
+  def _find_blender_executable()  [linha 107]
+  def _stop_process_tree()  [linha 126]
+  def _read_blender_status()  [linha 174]
+  def _read_text_tail()  [linha 189]
+  def _monitor_blender_process()  [linha 197]
+  def _safe_name()  [linha 255]
+  def _choose_save_path()  [linha 261]
+  def _companion_blend_path()  [linha 282]
+  def _unique_preview_path()  [linha 292]
+  def _should_show_blender()  [linha 302]
+  def _detect_botanical_kind()  [linha 323]
+  def _detect_asset_kind()  [linha 344]
+  def _supports_generic_botanical_fallback()  [linha 360]
+  def _supports_generic_tree_fallback()  [linha 375]
+  def _normalize_request()  [linha 379]
+  def _detect_style()  [linha 389]
+  def _build_botanical_source()  [linha 398]
+  def _validate_generated_source()  [linha 705]
+  def _build_saved_project_validator()  [linha 838]
+  def _inspect_render()  [linha 1174]
+  def _validate_saved_project()  [linha 1227]
+  def _generate_source()  [linha 1281]
+  def _build_runner()  [linha 1449]
+  def generate_blender_script()  [linha 2028]
+  def blender_render_background()  [linha 2301]
+
+=== .\blender_project_edit.py (437 linhas) ===
+  imports: __future__, blender_automation, glob, json, os, shutil, subprocess, tempfile, tkinter
+  def _choose_project_to_edit()  [linha 26]
+  def _choose_edited_project_path()  [linha 41]
+  def _build_inspector()  [linha 61]
+  def _inspect_project()  [linha 109]
+  def _build_edit_runner()  [linha 150]
+  def _unique_backup_path()  [linha 236]
+  def edit_blender_project()  [linha 245]
+
+=== .\brain.py (534 linhas) ===
+  imports: config, google, hashlib, memory, re, time, tools, unicodedata
+  class KronosBrain  [linha 56]
+      def __init__()
+      def _normalize_text()
+      def _is_telemetry_request()
+      def _is_tool_intent()
+      def _format_telemetry_response()
+      def _is_roblox_build_request()
+      def _is_blender_build_request()
+      def _is_blender_edit_request()
+      def _handle_parallel_tools()
+      def _dispatch_contingency_action()
+      def chat_turn()
+      def _parse_response()
+
+=== .\config.py (49 linhas) ===
+  imports: dotenv, os, truststore
+  class KeyRotator  [linha 35]
+      def __init__()
+      def current_key()
+      def rotate()
+
+=== .\listener.py (106 linhas) ===
+  imports: config, google, io, numpy, os, sounddevice, threading, time, wave
+  class KronosListener  [linha 17]
+      def __init__()
+      def _transcribe()
+      def _audio_callback()
+      def start()
+      def stop()
+      def _listen_loop()
+
+=== .\main.py (52 linhas) ===
+  imports: brain, sys, voice
+  def print_banner()  [linha 5]
+  def main()  [linha 18]
+
+=== .\memory.py (49 linhas) ===
+  imports: contextlib, os, sqlite3
+  def get_db()  [linha 8]
+  def init_memory()  [linha 15]
+  def get_all_facts()  [linha 30]
+  def save_fact()  [linha 40]
+
+=== .\preview_voices.py (61 linhas) ===
+  imports: config, google, os, pygame, time, wave
+  def save_wav()  [linha 14]
+  def testar()  [linha 21]
+
+=== .\roblox_automation.py (877 linhas) ===
+  imports: config, contextlib, ctypes, google, os, psutil, pyautogui, pygetwindow, pyperclip, re, shutil, subprocess, threading, time
+  def _find_roblox_executable()  [linha 28]
+  def _roblox_studio_windows()  [linha 44]
+  def _is_roblox_place_window()  [linha 68]
+  def _activate_roblox_studio()  [linha 79]
+  def roblox_automation_control()  [linha 141]
+  def _roblox_checkpoint()  [linha 153]
+  def _roblox_click()  [linha 183]
+  def _roblox_press()  [linha 188]
+  def _roblox_hotkey()  [linha 193]
+  def _command_bar_is_visible()  [linha 198]
+  def _ensure_roblox_command_bar()  [linha 217]
+  def _output_panel_is_visible()  [linha 233]
+  def _ensure_roblox_output_panel()  [linha 254]
+  def _lua_string_literal()  [linha 266]
+  def _build_roblox_runtime_source()  [linha 277]
+  def _roblox_log()  [linha 292]
+  def _capture_roblox_output()  [linha 296]
+  def _new_roblox_output()  [linha 316]
+  def _output_has_error()  [linha 322]
+  def _run_luau_compiler()  [linha 357]
+  def _start_roblox_play()  [linha 381]
+  def generate_roblox_script()  [linha 426]
+  def play_roblox_studio()  [linha 866]
+
+=== .\setup_autostart.py (26 linhas) ===
+  imports: os
+  def setup_startup()  [linha 3]
+
+=== .\sfx.py (38 linhas) ===
+  imports: numpy, pygame
+  def _make_tone()  [linha 7]
+  def play_sfx()  [linha 29]
+
+=== .\test_voices.py (15 linhas) ===
+  imports: subprocess
+
+=== .\tool_registry.py (297 linhas) ===
+  imports: __future__, dataclasses, inspect, types, typing
+  class ToolMetadata  [linha 12]
+  class ToolSpec  [linha 24]
+      def invoke()
+      def model_description()
+  def build_tool_registry()  [linha 274]
+
+=== .\tools.py (554 linhas) ===
+  imports: PIL, base64, blender_automation, blender_project_edit, comtypes, config, ctypes, google, io, json, os, pathlib, psutil, pyautogui, pycaw, pygetwindow, pyperclip, re, roblox_automation, shutil, subprocess, tempfile, threading, time, tool_registry, urllib, webbrowser
+  def _cpu_sampler()  [linha 50]
+  def _find_executable()  [linha 75]
+  def set_volume()  [linha 118]
+  def _send_media_key()  [linha 140]
+  def media_control()  [linha 145]
+  def play_music()  [linha 164]
+  def send_notification()  [linha 189]
+  def read_clipboard()  [linha 221]
+  def copy_to_clipboard()  [linha 228]
+  def open_website()  [linha 238]
+  def open_app()  [linha 256]
+  def close_app()  [linha 293]
+  def search_google()  [linha 330]
+  def set_operational_mode()  [linha 338]
+  def analyze_screen()  [linha 366]
+  def _resolve_workspace_path()  [linha 391]
+  def write_file()  [linha 423]
+  def read_file()  [linha 463]
+  def list_directory()  [linha 471]
+  def get_weather_data()  [linha 479]
+  def get_full_telemetry()  [linha 500]
+
+=== .\voice.py (165 linhas) ===
+  imports: array, base64, config, google, io, numpy, re, sounddevice, sys, time, wave
+  def _prepare_text()  [linha 26]
+  def _save_pcm_to_wav_bytes()  [linha 35]
+  def _generate_tts_audio()  [linha 63]
+  def generate_speech_b64()  [linha 116]
+  def speak()  [linha 144]
+
+=== .\scripts_blender\Blender_0835407098.py (137 linhas) ===
+  imports: bmesh, bpy, math, random
+  def cleanup_scene()  [linha 6]
+  def create_tree()  [linha 19]
+
+=== .\scripts_blender\Blender_0835407098_2.py (140 linhas) ===
+  imports: bmesh, bpy, math, mathutils, random
+  def create_branch_mesh()  [linha 37]
+  def build_tree_recursive()  [linha 70]
+
+=== .\scripts_blender\Blender_0835407098_2_runner.py (84 linhas) ===
+  imports: bpy, math, mathutils, runpy, traceback
+  def configure_scene()  [linha 11]
+
+=== .\scripts_blender\Blender_0835407098_runner.py (84 linhas) ===
+  imports: bpy, math, mathutils, runpy, traceback
+  def configure_scene()  [linha 11]
+
+=== .\scripts_blender\Blender_48d8d31242.py (217 linhas) ===
+  imports: bpy, math, random
+  def _kronos_progress()  [linha 5]
+  def create_branch_curve()  [linha 56]
+  def generate_sub_branches()  [linha 92]
+
+=== .\scripts_blender\Blender_48d8d31242_runner.py (155 linhas) ===
+  imports: bpy, json, math, mathutils, os, runpy, traceback
+  def write_status()  [linha 16]
+  def configure_scene()  [linha 22]
+  def export_model()  [linha 93]
+  def _kronos_progress()  [linha 128]
+
+=== .\scripts_blender\Blender_48d8d31242_status.json (1 linhas) ===
+
+=== .\scripts_blender\Blender_d718b2049b.py (144 linhas) ===
+  imports: bmesh, bpy, math, random
+  def _kronos_progress()  [linha 6]
+
+=== .\scripts_blender\Blender_d718b2049b_runner.py (223 linhas) ===
+  imports: bpy, json, math, mathutils, os, runpy, time, traceback
+  def write_status()  [linha 17]
+  def configure_scene()  [linha 23]
+  def export_model()  [linha 100]
+  def optimize_model_objects()  [linha 135]
+  def _kronos_progress()  [linha 161]
+
+=== .\scripts_blender\Blender_d718b2049b_status.json (1 linhas) ===
+
+=== .\scripts_blender\generate_test_assets.py (190 linhas) ===
+  imports: blender_automation, blender_project_edit, json, os, subprocess, sys, unittest
+  def generate_asset()  [linha 21]
+  def generate_modifiers_asset()  [linha 50]
+
+=== .\scripts_blender\run_modifiers_asset.py (92 linhas) ===
+  imports: bmesh, bpy, math, mathutils
+
+=== .\tests\__init__.py (1 linhas) ===
+  imports: 
+
+=== .\tests\test_advanced_capabilities.py (230 linhas) ===
+  imports: blender_automation, blender_project_edit, brain, google, json, memory, os, roblox_automation, subprocess, tempfile, unittest
+  class AdvancedBlenderModelingTests  [linha 18]
+      def test_ast_validator_permits_advanced_modifiers_and_mesh_operations()
+      def test_execute_modifiers_and_component_separation_in_blender()
+  class AdvancedRobloxLuauTests  [linha 135]
+      def test_roblox_runtime_ok_evaluates_true_without_legacy_keys()
+      def test_luau_interactive_mechanism_scaffold()
+      def test_luau_ui_interface_scaffold()
+  class BrainAndMemoryIntegrationTests  [linha 200]
+      def test_user_memory_injection_into_prompt()
+      def test_contingency_fallback_dispatch()
+
+=== .\tests\test_blender_capabilities.py (353 linhas) ===
+  imports: blender_automation, json, os, subprocess, tempfile, unittest
+  class BlenderProcessLifecycleTests  [linha 14]
+      def test_terminal_done_is_success_even_if_visible_process_stays_open()
+      def test_error_status_is_terminal_and_preserves_blender_diagnostic()
+      def test_timeout_cleans_up_and_does_not_report_a_success_state()
+      def test_malformed_status_is_not_treated_as_success()
+  class BlenderCapabilityIntegrationTests  [linha 112]
+      def test_botanical_intent_does_not_treat_negated_tree_as_tree()
+      def test_asset_kind_distinguishes_single_rocks_from_collections()
+      def test_generated_source_rejects_known_invalid_bmesh_operator_names()
+      def test_runner_writes_terminal_status_and_closes_visible_blender()
+      def _run_model_pipeline()
+      def test_stylized_plant_has_individual_leaf_meshes_and_valid_render()
+      def test_potted_plant_keeps_most_leaves_visible_above_the_container()
+      def test_low_poly_tree_separates_leaves_and_roundtrips_supported_exports()
+      def test_generic_tree_uses_explicit_fallback_after_ai_generation_fails()
+
+=== .\tests\test_blender_project_edit.py (201 linhas) ===
+  imports: blender_automation, blender_project_edit, os, subprocess, tempfile, unittest
+  class BlenderProjectEditIntegrationTests  [linha 15]
+      def test_edits_a_copy_of_an_existing_project_and_reopens_it()
+      def test_edits_existing_mesh_with_applied_boolean_and_bevel_modifiers()
+
+=== .\tests\test_personality_and_voice.py (157 linhas) ===
+  imports: base64, brain, io, types, unittest, voice, wave
+  class KronosPersonalityTests  [linha 12]
+      def test_personality_is_confident_without_insulting_the_user()
+  class KronosTelemetryRoutingTests  [linha 22]
+      def setUp()
+      def test_legacy_pc_health_questions_are_recognized_as_tool_requests()
+      def test_pc_health_question_reads_and_reports_live_telemetry_directly()
+      def test_component_temperature_question_does_not_claim_weather_is_cpu_temperature()
+  class KronosVoiceTests  [linha 79]
+      def test_text_cleanup_preserves_question_and_exclamation_prosody()
+      def test_gemini_tts_uses_transcript_metadata_and_native_wav_output()
+      def test_legacy_tts_fallback_uses_charon_and_the_updated_style()
+      def test_primary_tts_voice_is_charon()
+      def test_pcm_fallback_keeps_native_rate_without_pitch_speedup()
+
+=== .\tests\test_real_models_generation.py (56 linhas) ===
+  imports: blender_automation, os, tempfile, unittest
+  class RealModelsGenerationTests  [linha 12]
+      def test_generate_stylized_potted_plant()
+      def test_generate_stylized_rock()
+
+=== .\tests\test_roblox_automation.py (99 linhas) ===
+  imports: roblox_automation, types, unittest
+  class RobloxRuntimeEvidenceTests  [linha 8]
+      def test_runtime_marker_is_emitted_only_after_generated_source()
+      def test_play_is_confirmed_only_by_runtime_marker()
+      def test_play_without_runtime_marker_is_not_reported_as_success()
+
+=== .\tests\test_tool_runtime.py (177 linhas) ===
+  imports: brain, google, os, tempfile, tools, unittest
+  def response_with_tool()  [linha 11]
+  class ToolRegistryTests  [linha 18]
+      def test_every_tool_has_model_facing_operational_metadata()
+      def test_registry_rejects_invalid_arguments_before_invoking_tool()
+  class WorkspaceFileToolTests  [linha 35]
+      def test_file_tools_confine_paths_and_protect_core_files()
+      def test_overwrites_create_backup_and_replace_atomically()
+  class ToolPlanningLoopTests  [linha 63]
+      def test_registered_tools_compose_a_new_write_then_verify_workflow()
+      def test_tool_calls_continue_across_multiple_model_rounds()
+      def test_tool_call_limit_is_enforced()
+
+=== .\ui\app.js (836 linhas) ===
+
+=== .\ui\index.html (225 linhas) ===
+
+=== .\ui\style.css (548 linhas) ===
